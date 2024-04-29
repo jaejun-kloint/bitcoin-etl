@@ -23,12 +23,13 @@ do
                     START=832602
                 fi 
                 
-                mkdir $NEWDIR
+                mkdir -p $NEWDIR
                 SECONDS=0
-                python3 bitcoinetl.py export_all -s ${START} -e 837164 -p http://bitcoin:kloint_bitcoin@10.0.3.100:8332 -o ${NEWDIR} -w ${WORKER} --enrich ${ENRICH}
+                python3 bitcoinetl.py export_all -s ${START} -e 837164 -p http://bitcoin:kloint_bitcoin@10.0.3.100:8332 -o ${NEWDIR} -b ${BATCH_NUM} -w ${WORKER} --enrich ${ENRICH}
                 duration=$SECONDS
                 echo "$((duration / 60)) minutes and $((duration % 60)) seconds elapsed." > ${NEWDIR}/result.txt
 
+                echo "${SIZE},${BATCH_NUM},${WORKER},${ENRICH},${duration}" >> ./final_result_$(date +%m-%d-%y).csv
                 echo "Rest for 1 minute."    
                 sleep 60
             done
